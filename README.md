@@ -24,9 +24,7 @@ requires environment variables:
 
 ### Installation
 
-Package will be available on PyPI soon.
-
---install the package with pip:--
+Package is available on [PyPI](https://pypi.org/project/gpt4api-dg/) and can be installed with pip:
 
 ```bash
 pip install gpt4api_dg
@@ -34,17 +32,30 @@ pip install gpt4api_dg
 
 ### Usage
 
-Usage sample is copied from earlier gpt-3.5-turbo project and is subject to change. It is not yet tested with gpt-4.
+Usage sample:
 
 ```python
-from dg_chatgpt_api import ChatGPTAPI as api
+from dotenv import load_dotenv
+import os
 
-api.reconnect()
-api.add_user("user_id", "username")
-api.add_conversation("user_id")
-message = {
-    "role": "user",
-    "content": "message"
-}
-response = api.get_response("user_id", message)
+from gpt4api_dg import API
+from gpt4api_dg.models import User, Message, Conversation, Role
+
+load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+API.set_api_key(openai_api_key)
+
+test_user = api.add_user("test_id", "test_username")
+instruction = Message(
+    role = Role.SYSTEM,
+    content = "You are a music advisor. You will answer questions about music and help people find new music."
+)
+test_conversation = api.add_conversation("test_id", instruction)
+test_input = input(f"{test_user.username}: ")
+message = Message(
+    role = Role.USER,
+    content = test_input
+)
+response = api.get_response("test_id", message)
+print(response.content)
 ```
