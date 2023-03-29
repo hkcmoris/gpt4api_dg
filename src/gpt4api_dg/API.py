@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 
 import openai
-from src.gpt4api_dg.models import User, Conversation, Message
+from gpt4api_dg.models import User, Conversation, Message
 
 
 users = {}
