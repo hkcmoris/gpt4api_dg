@@ -54,7 +54,7 @@ class Message:
         return f"Message(role={repr(self.role)}, content={self.content})"
 
     def __str__(self):
-        return f"{self.role.name}: {self.content}"
+        return f"{self.role.name.lower()}: {self.content}"
 
     def toJSON(self):
         return {
