@@ -1,10 +1,21 @@
 import logging
 from datetime import datetime
-from models import User, Conversation, Message
+
+import openai
+from src.gpt4api_dg.models import User, Conversation, Message
 
 
 users = {}
 conversations = {}
+
+
+def set_api_key(api_key: str):
+    """Set OpenAI API key
+
+    Args:
+        api_key (str): OpenAI API key
+    """
+    openai.api_key = api_key
 
 
 def create_user(id: str, username: str):

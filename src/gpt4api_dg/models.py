@@ -51,10 +51,16 @@ class Message:
         self.content = content
 
     def __repr__(self):
-        return json.dumps(self.__dict__)
+        return f"Message(role={repr(self.role)}, content={self.content})"
 
     def __str__(self):
         return f"{self.role.name}: {self.content}"
+
+    def toJSON(self):
+        return {
+            "role": self.role.name.lower(),
+            "content": self.content
+        }
 
 
 class Conversation:
@@ -68,7 +74,7 @@ class Conversation:
             instruction (Message): Instruction message
         """
         self.user = user
-        self.messages = [repr(instruction)]
+        self.messages = [instruction.toJSON()]
 
     def __repr__(self):
         return f"Conversation(user={repr(self.user)})"
@@ -82,7 +88,7 @@ class Conversation:
         Args:
             message (Message): Message
         """
-        self.messages.append(repr(message))
+        self.messages.append(message.toJSON())
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=self.messages,
