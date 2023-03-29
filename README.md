@@ -45,17 +45,17 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 API.set_api_key(openai_api_key)
 
-test_user = api.add_user("test_id", "test_username")
+test_user = API.add_user("test_id", "test_username")
 instruction = Message(
     role = Role.SYSTEM,
     content = "You are a music advisor. You will answer questions about music and help people find new music."
 )
-test_conversation = api.add_conversation("test_id", instruction)
+test_conversation = API.add_conversation("test_id", instruction)
 test_input = input(f"{test_user.username}: ")
 message = Message(
     role = Role.USER,
     content = test_input
 )
-response = api.get_response("test_id", message)
+response = API.get_response("test_id", message)
 print(response.content)
 ```
