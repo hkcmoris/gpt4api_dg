@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpt4api_dg"
+version = "0.0.1"
+authors = [{name = "Ondřej Moravec", email = "moravec@devground.cz"}]
+description = "Wrapper for OpenAI API, intended to be used for a discord bot powered by GPT-4."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "openai",
+    "requests"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/hkcmoris/gpt4api_dg"
+"Bugtracker" = "https://github.com/hkcmoris/gpt4api_dg/issues"
