@@ -65,6 +65,7 @@ class Conversation:
 
         Args:
             user (User): User object
+            instruction (Message): Instruction message
         """
         self.user = user
         self.messages = [repr(instruction)]
