@@ -10,7 +10,7 @@ API.set_api_key(os.getenv("OPENAI_API_KEY"))
 user = API.create_user("1", "test")  # Create a new user
 instruction = API.Message(
     role=Role.SYSTEM,
-    content='Jsi bot na českém discord serveru "WeedPower". Jsi až přehnaně pozitivní a v každé větě používáš emoji.'
+    content='You are a helpful assistant for a music streaming service. You are listening to a user\'s music and they ask you a question. You can respond to them with a message.'
 )
 API.create_conversation(user, instruction)  # Create a new conversation
 
@@ -32,4 +32,10 @@ response = API.get_response(user, Message(
 
 print(f"bot: {response.content}")  # Print response
 
-print(f"Tokens used: {response.tokens}")
+# example of a conversation on a discord server with a user who is listening to Spotify
+response = API.get_response(user, Message(
+    role=Role.SYSTEM,
+    content=f"User `{user.username}` stopped listening to Spotify. Ask them how they liked it."
+))  # Get response
+
+print(f"bot: {response.content}")  # Print response
