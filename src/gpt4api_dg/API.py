@@ -10,23 +10,36 @@ conversations = {}
 
 
 def set_api_key(api_key: str):
-    """Set OpenAI API key
+    """
+    Set the api key for openai
 
-    Args:
-        api_key (str): OpenAI API key
+    ...
+
+    Parameters
+    ----------
+    api_key : str
+        The api key for openai
     """
     openai.api_key = api_key
 
 
 def create_user(id: str, username: str):
-    """Create a new user
+    """
+    Create a new user
 
-    Args:
-        id (str): User id
-        username (str): User username
+    ...
 
-    Returns:
-        User: User object or False if user already exists
+    Parameters
+    ----------
+    id : str
+        id of a user, has to be a string due to openai's api
+    username : str
+        username of the user
+
+    Returns
+    -------
+    User
+        User object or False if user already exists
     """
     if id in users:
         return False
@@ -35,30 +48,29 @@ def create_user(id: str, username: str):
     return user
 
 
-# @users.get
-# def get(id: str):
-#     """Get user by id
-
-#     Args:
-#         id (str): User id
-
-#     Returns:
-#         User: User object or False if user not found
-#     """
-#     if id in users:
-#         return users[id]
-#     return False
-
-
 def create_conversation(user: User, instruction: Message):
-    """Create a new conversation
+    """
+    Create a new conversation
 
-    Args:
-        user (User): User object
-        instruction (Message): Instruction message
+    ...
 
-    Returns:
-        Conversation: Conversation object or False if conversation already exists
+    Parameters
+    ----------
+    user : User
+        User object
+    instruction : Message
+        Message object containing the instructions for bot behavior
+
+    Returns
+    -------
+    Conversation
+        Conversation object or False if conversation already exists
+
+    Notes
+    -----
+    Typically, a conversation is formatted with a system message first,
+    followed by alternating user and assistant messages.
+    The system message helps set the behavior of the assistant.
     """
     if user.id in conversations:
         return False
@@ -68,17 +80,25 @@ def create_conversation(user: User, instruction: Message):
 
 
 def get_response(user: User, message: Message):
-    """Get response from conversation
+    """
+    Get response from the api
 
-    Args:
-        user (User): User object
-        message (Message): Message object
+    ...
 
-    Returns:
-        Message: Response message or None if conversation not found
+    Parameters
+    ----------
+    user : User
+        User object
+    message : Message
+        Message object
+
+    Returns
+    -------
+    Message
+        Message object or None if conversation not found
     """
     if user.id in conversations:
-        conversation = conversations[user.id]
+        conversation = Conversation(conversations[user.id])
         return conversation.get_response(message)
     return None
 
