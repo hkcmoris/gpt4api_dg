@@ -51,6 +51,9 @@ class User:
         username of the self.messages
     """
 
+    id = "None"
+    username = "None"
+
     def __init__(self, id: str, username: str):
         """
         Parameters
@@ -110,6 +113,9 @@ class Message:
         Returns a json representation of the message
     """
 
+    role = Role.USER
+    content = ""
+
     def __init__(self, role: Role, content: str):
         """
         Parameters
@@ -159,6 +165,9 @@ class Conversation:
     get_response(message: Message):
         Sends a message to the api and returns the response
     """
+
+    user = None
+    messages = []
 
     def __init__(self, user: User, instruction: Message):
         """

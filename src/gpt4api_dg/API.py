@@ -115,7 +115,7 @@ def get_response(user: User, message: Message) -> Message | None:
         Message object or None if conversation not found
     """
     if user.id in conversations:
-        conversation = Conversation(conversations[user.id])
+        conversation = conversations[user.id]
         return conversation.get_response(message)
     return None
 
