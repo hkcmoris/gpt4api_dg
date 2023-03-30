@@ -1,3 +1,19 @@
+"""
+This module contains the API for the gpt4api_dg package.
+
+...
+
+Functions
+---------
+set_api_key(api_key: str)
+    Set the api key for openai
+create_user(id: str, username: str)
+    Create a new user
+create_conversation(user: User, instruction: Message)
+    Create a new conversation
+get_response(user: User, message: Message)
+    Get response from the api
+"""
 import logging
 from datetime import datetime
 
