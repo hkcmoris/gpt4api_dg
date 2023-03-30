@@ -16,6 +16,7 @@ get_response(user: User, message: Message)
 """
 import logging
 from datetime import datetime
+from typing import Literal
 
 import openai
 from gpt4api_dg.models import User, Conversation, Message
@@ -39,7 +40,7 @@ def set_api_key(api_key: str):
     openai.api_key = api_key
 
 
-def create_user(id: str, username: str):
+def create_user(id: str, username: str) -> User | Literal[False]:
     """
     Create a new user
 
@@ -64,7 +65,7 @@ def create_user(id: str, username: str):
     return user
 
 
-def create_conversation(user: User, instruction: Message):
+def create_conversation(user: User, instruction: Message) -> Conversation | Literal[False]:
     """
     Create a new conversation
 
@@ -95,7 +96,7 @@ def create_conversation(user: User, instruction: Message):
     return conversation
 
 
-def get_response(user: User, message: Message):
+def get_response(user: User, message: Message) -> Message | None:
     """
     Get response from the api
 
