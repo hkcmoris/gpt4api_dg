@@ -1,3 +1,36 @@
+"""
+A module to represent the models used in the project.
+
+...
+
+Classes
+-------
+User
+    A class to represent a user.
+Role
+    A class to represent a role.
+Message
+    A class to represent a message.
+Conversation
+    A class to represent a conversation.
+
+Functions
+---------
+None
+
+Exceptions
+----------
+None
+
+Notes
+-----
+None
+
+Examples
+--------
+None
+"""
+
 from enum import Enum
 import json
 
@@ -5,14 +38,27 @@ import openai
 
 
 class User:
-    """gpt4api_dg's User model"""
+    """
+    A class to represent a user.
 
-    def __init__(self, id, username):
-        """User model constructor
+    ...
 
-        Args:
-            id (int): User id
-            username (str): User username
+    Attributes
+    ----------
+    id : str
+        id of a self.messages, has to be a string due to openai's api
+    username : str
+        username of the self.messages
+    """
+
+    def __init__(self, id: str, username: str):
+        """
+        Parameters
+        ----------
+        id : str
+            id of a user, has to be a string due to openai's api
+        username : str
+            username of the user
         """
         self.id = id
         self.username = username
@@ -25,11 +71,19 @@ class User:
 
 
 class Role(Enum):
-    """gpt4api_dg's Role model
-    values:
-        SYSTEM,
-        USER,
-        ASSISTANT
+    """
+    A class to represent a role.
+
+    ...
+
+    Attributes
+    ----------
+    SYSTEM : int
+        system role, used for sending system prompts to the api
+    USER : int
+        user role, used for sending user prompts to the api
+    ASSISTANT : int
+        assistant role, this role represents the api's response
     """
 
     SYSTEM = 1
@@ -38,14 +92,32 @@ class Role(Enum):
 
 
 class Message:
-    """gpt4api_dg's Message model"""
+    """
+    A class to represent a message.
+
+    ...
+
+    Attributes
+    ----------
+    role : Role
+        message role
+    content : str
+        message content
+
+    Methods
+    -------
+    toJSON():
+        Returns a json representation of the message
+    """
 
     def __init__(self, role: Role, content: str):
-        """Message model constructor
-
-        Args:
-            role (Role): Message role
-            content (str): Message content
+        """
+        Parameters
+        ----------
+        role : Role
+            message role
+        content : str
+            message content
         """
         self.role = role
         self.content = content
@@ -57,6 +129,12 @@ class Message:
         return f"{self.role.name.lower()}: {self.content}"
 
     def toJSON(self):
+        """
+        Returns
+        -------
+        json
+            json representation of the message
+        """
         return {
             "role": self.role.name.lower(),
             "content": self.content
@@ -64,14 +142,38 @@ class Message:
 
 
 class Conversation:
-    """gpt4api_dg's  model"""
+    """
+    A class to represent a conversation.
+
+    ...
+
+    Attributes
+    ----------
+    user : User
+        user object
+    messages : list
+        list of messages
+
+    Methods
+    -------
+    get_response(message: Message):
+        Sends a message to the api and returns the response
+    """
 
     def __init__(self, user: User, instruction: Message):
-        """Conversation model constructor
+        """
+        Parameters
+        ----------
+        user : User
+            user object
+        instruction : Message
+            instruction message
 
-        Args:
-            user (User): User object
-            instruction (Message): Instruction message
+        Notes
+        -----
+        Typically, a conversation is formatted with a system message first,
+        followed by alternating user and assistant messages.
+        The system message helps set the behavior of the assistant.
         """
         self.user = user
         self.messages = [instruction.toJSON()]
@@ -82,11 +184,21 @@ class Conversation:
     def __str__(self):
         return f"Conversation with {self.user}"
 
-    def get_response(self, message: Message):
-        """Get response from GPT-4 API
+    def get_response(self, message: Message) -> Message:
+        """
+        Sends a message to the api and returns the response
 
-        Args:
-            message (Message): Message
+        ...
+
+        Parameters
+        ----------
+        message : Message
+            message object
+
+        Returns
+        -------
+        Message
+            message object
         """
         self.messages.append(message.toJSON())
         response = openai.ChatCompletion.create(
@@ -95,6 +207,8 @@ class Conversation:
             user=self.user.id
         )
         self.messages.append(response.choices[0].message)
+        # FIXME: This doesn't works
         if (response.usage["total_tokens"] > 8000):
             self.messages.pop(1)
-        return response.choices[0].message
+
+        return Message(Role.ASSISTANT, response.choices[0].text)
