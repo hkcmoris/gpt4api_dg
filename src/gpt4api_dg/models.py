@@ -162,12 +162,15 @@ class Conversation:
 
     Methods
     -------
+    set_model(model: str):
+        Sets the model of the conversation (default: `gpt-4`)
     get_response(message: Message):
         Sends a message to the api and returns the response
     """
 
     user = None
     messages = []
+    model = "gpt-4"
 
     def __init__(self, user: User, instruction: Message):
         """
@@ -193,6 +196,19 @@ class Conversation:
     def __str__(self):
         return f"Conversation with {self.user}"
 
+    def set_model(self, model: str):
+        """
+        Sets the model of the conversation
+
+        ...
+
+        Parameters
+        ----------
+        model : str
+            model name
+        """
+        self.model = model
+
     def get_response(self, message: Message) -> Message:
         """
         Sends a message to the api and returns the response
@@ -211,7 +227,7 @@ class Conversation:
         """
         self.messages.append(message.toJSON())
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model=self.model,
             messages=self.messages,
             user=self.user.id
         )

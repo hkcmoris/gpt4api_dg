@@ -65,7 +65,7 @@ def create_user(id: str, username: str) -> User | Literal[False]:
     return user
 
 
-def create_conversation(user: User, instruction: Message) -> Conversation | Literal[False]:
+def create_conversation(user: User, instruction: Message, model: str = "gpt-4") -> Conversation | Literal[False]:
     """
     Create a new conversation
 
@@ -92,6 +92,7 @@ def create_conversation(user: User, instruction: Message) -> Conversation | Lite
     if user.id in conversations:
         return False
     conversation = Conversation(user, instruction)
+    conversation.set_model(model)
     conversations[user.id] = conversation
     return conversation
 
